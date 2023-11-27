@@ -1,5 +1,5 @@
 class Map < ApplicationRecord
-  
+
   def generate_minesweeper_map(rows, cols, num_mines)
     tiles = Array.new(rows) { Array.new(cols, 0) }
     mines = Set.new
