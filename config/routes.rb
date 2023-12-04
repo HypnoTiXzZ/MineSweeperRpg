@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  devise_for :users
+  resources :users
+  get '/users/:id/detail', to: 'users#detail', as: 'user_detail'
   root 'maps#index'
 
   resources :maps

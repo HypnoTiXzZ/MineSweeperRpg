@@ -46,6 +46,8 @@ gem 'haml'
 
 gem 'sassc'
 
+gem 'devise'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
