@@ -1,0 +1,17 @@
+.size24 {
+  width: 24px;
+  height: 24px;
+  font-size: 10px;
+  line-height: 23px;
+}
+
+.cell {
+  float: left;
+  background-size: 100%;
+  font-weight: 700;
+  text-align: center;
+}
+
+.line {
+  display: flex;
+}

@@ -44,6 +44,8 @@ gem "bootsnap", require: false
 
 gem 'haml'
 
+gem 'sassc'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

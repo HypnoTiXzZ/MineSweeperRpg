@@ -1,4 +1,4 @@
 %h1 MSR
 - @maps.each do |map|
   %br
-  = link_to map.name, map_path(map.id)
+  = link_to map.name.to_s, map_path(map.id)

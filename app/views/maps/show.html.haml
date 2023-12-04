@@ -1,4 +1,9 @@
+= stylesheet_link_tag 'tile'
+= stylesheet_link_tag 'cell'
+
 %h1= @map.name
 
-%div
-  = @map.tiles.inspect
+%div{ data: { controller: 'maps--render', 'maps--render-target': 'data',
+              tiles: raw(@map.tiles.to_json) } }
+  .mapDiv{ data: { 'maps--render-target': 'mapDiv' } }
+

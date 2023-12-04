@@ -6,4 +6,9 @@ class MapsController < ApplicationController
   def show
     @map = Map.find(params[:id])
   end
+
+  def map_to_json
+    @map = Map.find(params[:id])
+    render json: @map
+  end
 end
