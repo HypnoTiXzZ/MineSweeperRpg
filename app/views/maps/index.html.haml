@@ -2,3 +2,15 @@
 - @maps.each do |map|
   %br
   = link_to map.name.to_s, map_path(map.id)
+  = link_to 'Destroy', map_path(map), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }
+
+%br
+%br
+= form_for(Map.new, url: create_simple_map_path) do |form|
+  %div
+    = form.label :name
+    = form.text_field :name
+
+  %div
+    = form.submit "Create Map"
+

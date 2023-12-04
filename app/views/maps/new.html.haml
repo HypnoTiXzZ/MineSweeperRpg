@@ -1,0 +1,9 @@
+%h1 New Map
+
+= form_with(model: @map, url: create_simple_map_path, local: true) do |form|
+  %div
+    = form.label :name
+    = form.text_field :name
+
+  %div
+    = form.submit 'Create Map'
