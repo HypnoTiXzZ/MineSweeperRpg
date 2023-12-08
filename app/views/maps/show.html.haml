@@ -3,7 +3,9 @@
 
 %h1= @map.name
 
-%div{ data: { controller: 'maps--render', 'maps--render-target': 'data',
-              tiles: raw(@map.tiles.to_json) } }
+%div{ data: { controller: 'maps--render', 'maps--render-target': 'data' } }
   .mapDiv{ data: { 'maps--render-target': 'mapDiv' } }
 
+  = link_to 'Claim Reward',
+            users_claim_reward_path,
+            data: { turbo_method: :patch }

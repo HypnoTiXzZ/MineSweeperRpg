@@ -15,7 +15,7 @@ class MapsController < ApplicationController
     @map = Map.find(params[:id])
     @map.destroy
 
-    redirect_to root_path, status: :see_other
+    redirect_to root_path
   end
 
   def create_simple
@@ -25,6 +25,7 @@ class MapsController < ApplicationController
     num_mines = 10 # Replace with the desired number of mines
     @map.generate_minesweeper_map(rows, cols, num_mines)
     if @map.save
+      current_user.update(map_id: @map.id)
       redirect_to @map, notice: 'Have Fun !'
     else
       render json: @map.errors, status: :unprocessable_entity

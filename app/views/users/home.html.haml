@@ -1,0 +1,8 @@
+%h2 Welcome To MineSweeperRpg : #{@user.email}
+
+To start a new game,
+
+= form_for Map.new, url: create_simple_map_path do |form|
+  = form.hidden_field :name, value: 'map'
+  %div
+    = form.submit 'Create Map'

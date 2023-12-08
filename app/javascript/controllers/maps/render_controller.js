@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["data", "mapDiv"]
+  static targets = ["data", "mapDiv", 'rewardBtn']
   connect() {
     this.directions = [
       { dx: -1, dy: 0 }, // left
@@ -42,7 +42,7 @@ export default class extends Controller {
       for (let col = 0; col < x; col++) {
         const tileDiv = document.createElement("div");
         tileDiv.id = `cell_${col}_${row}`;
-        tileDiv.className = "cell_closed size24 cell";
+        tileDiv.className = "cell-closed size24 cell";
         tileDiv.setAttribute("data-x", col);
         tileDiv.setAttribute("data-y", row);
         this.assign_tile(tileDiv);
@@ -79,6 +79,9 @@ export default class extends Controller {
     } else {
       this.trigger(tile, 'cell-' + tileValue);
     }
+    if (this.isAllNonMineTilesRevealed()) {
+      this.triggerWin(); // Call a method to handle the win condition
+    }
   }
 
   revealTilesAround(x, y) {
@@ -89,7 +92,6 @@ export default class extends Controller {
         const newX = parseInt(x) + parseInt(direction.dx);
         const newY = parseInt(y) + parseInt(direction.dy);
         if (this.isValidTile(newX, newY) && this.isTileClosed(newX, newY) && !this.isTileFlaged(newX, newY)) {
-          console.log(newX, newY, !this.isTileFlaged(newX, newY))
           const tileDiv = this.getTileDiv(newX, newY);
           this.revealTile(tileDiv, newX, newY);
         }
@@ -133,13 +135,19 @@ export default class extends Controller {
     const tileDiv = this.getTileDiv(x, y);
     return tileDiv.classList.contains('cell-flaged');
   }
+
+  isTileFlagedTile(tileDiv) {
+    return tileDiv.classList.contains('cell-flaged');
+  }
   isTileClosed(x, y) {
     const tileDiv = this.getTileDiv(x, y);
-    return tileDiv.classList.contains('cell_closed');
+    return tileDiv.classList.contains('cell-closed');
   }
 
   toggleFlagTile(tile) {
     if (this.gameOver === true)
+      return;
+    if (!tile.classList.contains('cell-closed'))
       return;
     if (tile.classList.contains('cell-flaged')) {
       tile.classList.remove('cell-flaged');
@@ -152,19 +160,43 @@ export default class extends Controller {
   trigger(tile, cellType) {
     if (!tile.classList.contains('cell-flaged')) {
       tile.classList.add(cellType);
-      tile.classList.remove('cell_closed');
+      tile.classList.remove('cell-closed');
     }
   }
 
   triggerMineRed(tile) {
     this.gameOver = true;
     tile.classList.add('cell_red_mine');
-    tile.classList.remove('cell_closed');
+    tile.classList.remove('cell-closed');
   }
 
   getTileDiv(x, y) {
     const selector = `[data-x="${x}"][data-y="${y}"]`;
     const tileDiv = document.querySelector(selector);
     return tileDiv;
+  }
+
+
+  isAllNonMineTilesRevealed() {
+    let totalTiles = this.minesweeperMap.length * this.minesweeperMap[0].length;
+    let revealedTiles = 0;
+  
+    for (let row = 0; row < this.minesweeperMap[0].length; row++) {
+      for (let col = 0; col < this.minesweeperMap.length; col++) {
+        if (this.minesweeperMap[col][row] == -1) {
+          totalTiles--;
+        }
+        if (this.minesweeperMap[col][row] !== -1 && !this.isTileClosed(col, row)) {
+          revealedTiles++;
+        }
+      }
+    }
+    return revealedTiles === totalTiles;
+  }
+
+  triggerWin() {
+    // Handle the win condition
+    this.rewardBtnTarget.disabled = false;
+    console.log("Congratulations! You have won the game.");
   }
 }
