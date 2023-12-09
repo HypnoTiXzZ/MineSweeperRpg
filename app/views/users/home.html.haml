@@ -1,8 +1,10 @@
-%h2 Welcome To MineSweeperRpg : #{@user.email}
+.d-flex.home-text
+  %h2
+    Welcome To MineSweeperRpg : #{@user.email}
+  .text
+    To start a new game,
 
-To start a new game,
-
-= form_for Map.new, url: create_simple_map_path do |form|
-  = form.hidden_field :name, value: 'map'
-  %div
-    = form.submit 'Create Map'
+  = form_for Map.new, url: create_simple_map_path do |form|
+    = form.hidden_field :name, value: 'map'
+    %div
+      = form.submit 'Create Map', class: 'btn-shadow m-top-2'
