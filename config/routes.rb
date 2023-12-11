@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :users, except: [:show, :update] 
   get '/users/:id/detail', to: 'users#detail', as: 'user_detail'
   get '/users/home', to: 'users#home', as: 'user_home'
+  post '/users/give_reward', to: 'users#give_reward'
   patch '/users/claim_reward', to: 'users#claim_reward'
   root 'maps#index'
 

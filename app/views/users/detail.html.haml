@@ -1,1 +1,9 @@
-Myself : #{@user.inspect}
+%h1 Infos
+%strong Username :
+= @user.username
+%br
+%strong Username :
+= @user.email
+%br
+%strong Balance :
+= @user.balance.to_s

@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  protect_from_forgery with: :null_session
+
   def detail
     @user = User.find(params[:id])
     if @user == current_user
@@ -8,11 +10,20 @@ class UsersController < ApplicationController
     end
   end
 
+  def give_reward
+    @user = current_user
+    data = JSON.parse(request.body.read)
+    won = data['won']
+    if won == true
+      @user.claim_reward
+      render json: { message: 'Récompense attribuée avec succes' }
+    else
+      render json: { message: 'you did not win' }
+    end
+  end
+
   def claim_reward
     @user = current_user
-    puts '-------------------'
-    puts @user.map_id.inspect
-    puts '-------------------'
     @map = Map.find(@user.map_id)
     @map.destroy
     @user.claim_reward

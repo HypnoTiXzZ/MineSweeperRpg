@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["data", "mapDiv", 'rewardBtn']
   connect() {
+    this.won = false;
     this.directions = [
       { dx: -1, dy: 0 }, // left
       { dx: -1, dy: -1 }, // up-left
@@ -14,6 +15,8 @@ export default class extends Controller {
       { dx: 0, dy: 1 }   // down
     ];
 
+    this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    console.log('CSRF Token:', this.csrfToken);
     const url = window.location.href;
     const id = url.split('/').pop();
     fetch('/maps/' + id + '/map_to_json')
@@ -28,6 +31,7 @@ export default class extends Controller {
     .catch(error => {
       console.error('Error:', error);
     });
+    this.give_reward();
   }
 
   generateMinesweeperMap(x, y) {
@@ -194,9 +198,29 @@ export default class extends Controller {
     return revealedTiles === totalTiles;
   }
 
+  give_reward() {
+    fetch('/users/give_reward', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'X-CSRF-Token': this.csrfToken,
+      },
+      credentials: 'include',
+      body: JSON.stringify({ won: this.won })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('server response:', data);
+      })
+      .catch(error => {
+        console.error('erreur lors de l\'envoi des données :', error);
+      });
+  }
+
   triggerWin() {
     // Handle the win condition
-    this.rewardBtnTarget.disabled = false;
+    this.won = true;
+    this.give_reward();
     console.log("Congratulations! You have won the game.");
   }
 }
