@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["data", "mapDiv", 'rewardBtn']
+  static targets = ["data", "mapDiv", 'won']
   connect() {
     this.won = false;
     this.directions = [
@@ -24,6 +24,8 @@ export default class extends Controller {
     .then(data => {
       this.gameOver = false;
       this.minesweeperMap = data.tiles;
+      this.rows = data.tiles.length;
+      this.cols =  data.tiles[0].length
       // `data` will contain the map object as a JavaScript object
       this.generateMinesweeperMap(data.tiles.length, data.tiles[0].length);
       // Use the map data to render it on your front-end
@@ -180,6 +182,25 @@ export default class extends Controller {
     return tileDiv;
   }
 
+  calculateReward() {
+    let rows = this.rows;
+    let cols = this.cols;
+    if (rows == 9 && cols == 9) {
+      return 100;
+    }
+    else if (rows == 16 && cols == 16) {
+      return 150;
+    }
+    else if (rows == 30 && cols == 16) {
+      return 300;
+    }
+    else if (rows == 30 && cols == 24) {
+      return 750;
+    }
+    else {
+      return 100;
+    }
+  }
 
   isAllNonMineTilesRevealed() {
     let totalTiles = this.minesweeperMap.length * this.minesweeperMap[0].length;
@@ -206,7 +227,10 @@ export default class extends Controller {
         'X-CSRF-Token': this.csrfToken,
       },
       credentials: 'include',
-      body: JSON.stringify({ won: this.won })
+      body: JSON.stringify({ 
+        won: this.won,
+        reward_amount: this.calculateReward() 
+       })
     })
       .then(response => response.json())
       .then(data => {
@@ -220,6 +244,7 @@ export default class extends Controller {
   triggerWin() {
     // Handle the win condition
     this.won = true;
+    this.wonTarget.classList.remove('d-none')
     this.give_reward();
     console.log("Congratulations! You have won the game.");
   }

@@ -4,7 +4,30 @@
   .text
     To start a new game,
 
-  = form_for Map.new, url: create_simple_map_path do |form|
+  %label
+  = form_for Map.new, url: create_simple_map_path(rows: 20, cols: 20, num_mines: 50) do |form|
     = form.hidden_field :name, value: 'map'
-    %div
-      = form.submit 'Create Map', class: 'btn-shadow m-top-2'
+    .wrapper.m-2
+      .option
+        = form.radio_button :difficulty, 'easy', id: 'difficulty_easy', class: 'input'
+        .option-content
+          = form.label :difficulty_easy, class: 'span' do
+            Easy
+      .option
+        = form.radio_button :difficulty, 'medium', id: 'difficulty_medium', class: 'input'
+        .option-content
+          = form.label :difficulty_medium, class: 'span' do
+            Medium
+      .option
+        = form.radio_button :difficulty, 'hard', id: 'difficulty_hard', class: 'input'
+        .option-content
+          = form.label :difficulty_hard, class: 'span' do
+            Hard
+      .option
+        = form.radio_button :difficulty, 'extreme', id: 'difficulty_extreme', class: 'input'
+        .option-content
+          = form.label :difficulty_extreme, class: 'span' do
+            Extreme
+
+    .d-flex.justify-content-center{ style: 'margin-top: 3rem;' }
+      = button_tag 'Create Map', type: 'submit', class: 'btn'

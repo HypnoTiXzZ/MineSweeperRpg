@@ -10,12 +10,12 @@ class UsersController < ApplicationController
     end
   end
 
-  def give_reward
+  def give_reward()
     @user = current_user
     data = JSON.parse(request.body.read)
     won = data['won']
     if won == true
-      @user.claim_reward
+      @user.claim_reward(data['reward_amount'])
       render json: { message: 'Récompense attribuée avec succes' }
     else
       render json: { message: 'you did not win' }

@@ -5,11 +5,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  def claim_reward
+  def claim_reward(amount)
     if balance.nil?
-      self.balance = 100
+      self.balance = amount
     else
-      self.balance += 100
+      self.balance += amount
     end
     save
   end

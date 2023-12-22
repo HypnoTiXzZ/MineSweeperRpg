@@ -1,13 +1,16 @@
 = stylesheet_link_tag 'tile'
 = stylesheet_link_tag 'cell'
+= stylesheet_link_tag 'map_card'
 
-.d-flex.home-text
-  %h1= @map.name
+.displayer
+  .map_card
+    .pricing-block-content
+      .d-flex.home-text{ data: { controller: 'maps--render', 'maps--render-target': 'data' } }
+        %h1
+          = @map.name
 
-  %div{ data: { controller: 'maps--render', 'maps--render-target': 'data' } }
-    .mapDiv{ data: { 'maps--render-target': 'mapDiv' } }
+        %div
+          .mapDiv.game-inside{ data: { 'maps--render-target': 'mapDiv' } }
 
-  = link_to 'Claim Reward',
-            users_claim_reward_path,
-            data: { turbo_method: :patch },
-            class: 'simple-white-link'
+        .d-none{ data: { 'maps--render-target': 'won' } }
+          You won

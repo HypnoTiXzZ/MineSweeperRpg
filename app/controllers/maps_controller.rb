@@ -1,6 +1,9 @@
 class MapsController < ApplicationController
   def index
     @maps = Map.all
+    if current_user
+      redirect_to user_home_path
+    end
   end
 
   def show
@@ -19,10 +22,21 @@ class MapsController < ApplicationController
   end
 
   def create_simple
+    difficulty = params.dig(:map, :difficulty)
+    puts 'hahaha' + difficulty.inspect
+    case difficulty
+    when 'easy'
+      rows, cols, num_mines = 9, 9, 10
+    when 'medium'
+      rows, cols, num_mines = 16, 16, 40
+    when 'hard'
+      rows, cols, num_mines = 30, 16, 99
+    when 'extreme'
+      rows, cols, num_mines = 30, 24, 160
+    else
+      rows, cols, num_mines = 9, 9, 10
+    end
     @map = Map.new(map_params)
-    rows = 10 # Replace with the desired number of rows
-    cols = 10 # Replace with the desired number of columns
-    num_mines = 10 # Replace with the desired number of mines
     @map.generate_minesweeper_map(rows, cols, num_mines)
     if @map.save
       current_user.update(map_id: @map.id)
