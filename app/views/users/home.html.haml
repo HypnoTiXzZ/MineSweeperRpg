@@ -31,3 +31,11 @@
 
     .d-flex.justify-content-center{ style: 'margin-top: 3rem;' }
       = button_tag 'Create Map', type: 'submit', class: 'btn'
+
+  %br
+  .text
+    If you want to buy an item,
+
+    .d-flex.justify-content-center{ style: 'margin-top: 1rem;' }
+      %button
+        = link_to 'shop', items_path, class: 'button no-underline'
