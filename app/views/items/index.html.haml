@@ -1,0 +1,10 @@
+%h1 Welcome to the Shop !
+
+%span
+  Here you can buy items to improve your mole
+
+%div
+  To sale :
+  - @items.group_by(&:name).each do |name, items_by_name|
+    %li
+      #{name}: #{items_by_name.size} left
