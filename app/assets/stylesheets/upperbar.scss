@@ -17,10 +17,6 @@ body {
   justify-content: space-between;
 }
 
-.m-top-2 {
-  margin-top: 2rem;
-}
-
 .user-links {
   justify-content: end;
 }
@@ -34,4 +30,21 @@ body {
 .simple-white-link {
   color: #FFFFFF;
   text-decoration: none;
+}
+
+//bootstrap
+.m-top-3 {
+  margin-top: 3rem;
+}
+
+.m-top-2 {
+  margin-top: 2rem;
+}
+
+.m-top-1 {
+  margin-top: 1rem;
+}
+
+.flex-directon-column{
+  flex-direction: column;
 }

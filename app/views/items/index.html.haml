@@ -4,7 +4,12 @@
   Here you can buy items to improve your mole
 
 %div
-  To sale :
-  - @items.group_by(&:name).each do |name, items_by_name|
-    %li
-      #{name}: #{items_by_name.size} left
+  To sale:
+  .d-flex{style: 'justify-content: space-around;'}
+    - @items.group_by(&:name).each do |name, items_by_name|
+      .displayer
+        .card
+          #{name}: #{items_by_name.size} left
+          = form_for items_by_name.last, url: item_path, method: :patch do |form|
+            - form.hidden_field user_id:, value: current_user.id
+            = button_tag 'Buy', type: 'submit', class: 'btn'

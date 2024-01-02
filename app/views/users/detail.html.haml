@@ -1,9 +1,24 @@
-%h1 Infos
-%strong Username :
-= @user.username
-%br
-%strong Username :
-= @user.email
-%br
-%strong Balance :
-= @user.balance.to_s
+.d-flex.home-text
+  %h1 Infos
+  .d-flex.flex-directon-column
+    %div
+      %strong
+        Username:
+      #{@user.username}
+    %br
+    %div
+      %strong
+        email:
+      #{@user.email}
+    %br
+    %div
+      %strong
+        Balance:
+      #{@user.balance.to_i.to_s}
+
+  .inventory_container.m-top-2
+    %strong
+      My items:
+    - @items.group_by(&:name).each do |name, items_by_name|
+      %li
+        #{name}: #{items_by_name.size} left

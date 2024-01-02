@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
   def detail
     @user = User.find(params[:id])
+    @items = Item.where(user: @user).all
     if @user == current_user
       render :detail
     else
